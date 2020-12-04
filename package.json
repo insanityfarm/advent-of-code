@@ -1,7 +1,7 @@
 {
-  "name": "node-typescript-boilerplate",
-  "version": "0.0.0",
-  "description": "Minimalistic boilerplate to quick-start Node.js development in TypeScript.",
+  "name": "advent-of-code",
+  "version": "0.0.1",
+  "description": "My solutions for the Advent of Code challenge",
   "engines": {
     "node": ">= 14.15 <15"
   },
@@ -29,9 +29,17 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "author": "Jakub Synowiec <github@jakubsynowiec.info>",
+  "author": "Parker Smith <parker@insanityfarm.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "commander": "^6.2.0",
+    "eslint-plugin-cypress": "^2.11.2",
+    "eslint-plugin-fp": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "react": "^17.0.1",
     "tslib": "~2.0.3"
   },
   "volta": {
