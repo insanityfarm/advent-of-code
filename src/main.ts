@@ -1,6 +1,6 @@
 import { program } from 'commander';
-import * as fs from 'fs';
-import { Answers, ChoiceCollection, prompt } from 'inquirer';
+import { PathLike, readdirSync } from 'fs';
+import { Answers, prompt } from 'inquirer';
 import * as path from 'path';
 
 program.version('0.0.1').description('My solutions for the Advent of Code challenge');
@@ -15,41 +15,45 @@ if (program.debug) {
   console.log(program.opts());
 }
 
+const inferOrPrompt = async (optionName: string, optionChoices: Array<Answers>) => {
+  if (optionChoices.length === 1) {
+    const [firstChoice] = optionChoices;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    return { [optionName]: firstChoice?.value };
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const response: Answers = await prompt([
+    {
+      name: optionName,
+      message: `Select a ${optionName.charAt(0).toUpperCase() + optionName.slice(1)}`,
+      type: 'list',
+      choices: optionChoices,
+    },
+  ]);
+  return response;
+};
+
+const getChoicesFromDir = (dir: PathLike) => {
+  const answers: Answers[] = readdirSync(dir)
+    .sort((a, b) => b.localeCompare(a))
+    .map((item, i) => ({
+      name: i === 0 ? `${item} (Latest)` : item,
+      value: item,
+    }));
+  return answers;
+};
+
 const main = async () => {
   const challengesDir = path.join(__dirname, './challenges/');
-  const yearChoices: ChoiceCollection = fs
-    .readdirSync(challengesDir)
-    .sort((a, b) => b.localeCompare(a))
-    .map((year, i) => ({
-      name: i === 0 ? `${year} (Latest)` : year,
-      value: year,
-    }));
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { year }: Answers = await prompt([
-    {
-      name: 'year',
-      message: 'Select a Year',
-      type: 'list',
-      choices: yearChoices,
-    },
-  ]);
-  const dayChoices: ChoiceCollection = fs
-    .readdirSync(path.join(challengesDir, year))
-    .sort((a, b) => b.localeCompare(a))
-    .map((day, i) => ({
-      name: i === 0 ? `${day} (Latest)` : day,
-      value: day,
-    }));
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { day }: Answers = await prompt([
-    {
-      name: 'day',
-      message: 'Select a Day',
-      type: 'list',
-      choices: dayChoices,
-    },
-  ]);
-  console.log(day);
+  const yearChoices = getChoicesFromDir(challengesDir);
+  const { year } = await inferOrPrompt('year', yearChoices);
+  const dayChoices = getChoicesFromDir(path.join(challengesDir, year));
+  const { day } = await inferOrPrompt('day', dayChoices);
+
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  console.log(`Running solution for Advent of Code ${year}, day ${day}...\n`);
+
+  require(path.join(challengesDir, year, day));
 };
 
 void main();
