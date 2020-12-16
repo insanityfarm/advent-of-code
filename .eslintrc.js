@@ -10,7 +10,6 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:cypress/recommended',
-    'plugin:fp/recommended',
     'plugin:import/errors',
     'plugin:import/typescript',
     'plugin:jest/recommended',
@@ -27,12 +26,11 @@ module.exports = {
     project: 'tsconfig.json',
     sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'cypress', 'fp', 'import', 'jest', 'promise', 'react', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'cypress', 'import', 'jest', 'promise', 'react', 'react-hooks'],
   rules: {
     '@typescript-eslint/no-shadow': 'error',
     'brace-style': 'error',
     curly: 'error',
-    'fp/no-unused-expression': 'off',
     'import/no-self-import': 'error',
     'import/order': [
       'error',
