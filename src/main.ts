@@ -1,6 +1,5 @@
 import { program } from 'commander';
-import { PathLike, readdirSync } from 'fs';
-import { readFileSync } from 'fs';
+import { PathLike, readdirSync, readFileSync } from 'fs';
 import { Answers, prompt } from 'inquirer';
 import * as path from 'path';
 
