@@ -29,6 +29,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'cypress', 'import', 'jest', 'promise', 'react', 'react-hooks'],
   rules: {
     '@typescript-eslint/no-shadow': 'error',
+    '@typescript-eslint/no-var-requires': 'off',
     'brace-style': 'error',
     curly: 'error',
     'import/no-self-import': 'error',

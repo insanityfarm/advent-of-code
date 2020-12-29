@@ -1,7 +1,10 @@
 import { program } from 'commander';
 import { PathLike, readdirSync } from 'fs';
+import { readFileSync } from 'fs';
 import { Answers, prompt } from 'inquirer';
 import * as path from 'path';
+
+// TODO: Remove need for @typescript-eslint/no-unsafe-assignment bypasses in this file
 
 program.version('0.0.1').description('My solutions for the Advent of Code challenge');
 
@@ -45,15 +48,23 @@ const getChoicesFromDir = (dir: PathLike) => {
 
 const main = async () => {
   const challengesDir = path.join(__dirname, './challenges/');
+  const inputsDir = path.join(__dirname, './inputs/');
   const yearChoices = getChoicesFromDir(challengesDir);
   const { year } = await inferOrPrompt('year', yearChoices);
   const dayChoices = getChoicesFromDir(path.join(challengesDir, year));
   const { day } = await inferOrPrompt('day', dayChoices);
+  const startTime = Date.now();
 
   // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
   console.log(`Running solution for Advent of Code ${year}, day ${day}...\n`);
 
-  require(path.join(challengesDir, year, day));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { run }: { run: (input: string) => void } = require(path.join(challengesDir, year, day));
+  const input = readFileSync(path.join(inputsDir, year, day, 'input'), 'utf8');
+
+  run(input);
+
+  console.log(`\nFinished in ${Date.now() - startTime}ms.`);
 };
 
 void main();
