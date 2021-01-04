@@ -18,7 +18,7 @@ if (program.debug) {
 }
 
 const inferOrPrompt = async (optionName: string, optionChoices: Array<Answers>) => {
-  if (optionChoices.length === 1) {
+  if (optionChoices.length === 1 || program.latest) {
     const [firstChoice] = optionChoices;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     return { [optionName]: firstChoice?.value };
