@@ -29,7 +29,7 @@
   "scripts": {
     "start": "./bin/aoc",
     "clean": "rimraf coverage build tmp",
-    "build": "rm -rf build/ && tsc -p tsconfig.release.json && cp -R src/inputs build/src",
+    "build": "rm -rf build/ && tsc -p tsconfig.release.json && cp -R src/inputs build/src/inputs",
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "jest --coverage",
