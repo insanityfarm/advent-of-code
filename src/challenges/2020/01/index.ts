@@ -1,38 +1,50 @@
-export function run(input: string): void {
-  const data = input.split('\n').map(e => Number(e));
-  let solutionFound = false;
+type InputData = number[];
 
-  console.log('PART 1:');
-  for (let i = 0; i < data.length; i++) {
-    for (let j = i + 1; j < data.length; j++) {
-      if (Number(data[i]) + Number(data[j]) === 2020) {
-        console.log(Number(data[i]) * Number(data[j]));
-        solutionFound = true;
-        break;
-      }
-    }
-    if (solutionFound) {
-      break;
-    }
-  }
+function formatInput(input: string): InputData {
+  return input.split('\n').map(e => Number(e));
+}
 
-  console.log('\nPART 2:');
-  solutionFound = false;
-  for (let i = 0; i < data.length; i++) {
-    for (let j = i + 1; j < data.length; j++) {
-      for (let k = j + 1; k < data.length; k++) {
-        if (data[i] + data[j] + data[k] === 2020) {
-          console.log(data[i] * data[j] * data[k]);
-          solutionFound = true;
-          break;
+export function run(input: string): string[] {
+  const data = formatInput(input);
+
+  function recurse(
+    remainingDepth: number,
+    total: number,
+    validate: (state: number[], total: number) => boolean,
+    totalDepth: number = remainingDepth,
+    state: number[] = []
+  ): number[] {
+    remainingDepth--;
+    const currentDepth = totalDepth - remainingDepth;
+    for (let i = totalDepth - currentDepth - 1; i < data.length; i++) {
+      const currentElement = data[i];
+      const currentState = [...state, currentElement];
+      if (remainingDepth >= 0) {
+        const nextState = recurse(remainingDepth, total, validate, totalDepth, currentState);
+        if (validate(nextState, total)) {
+          return nextState;
         }
       }
-      if (solutionFound) {
-        break;
-      }
     }
-    if (solutionFound) {
-      break;
-    }
+    return state;
   }
+
+  function validateArrayElementSum(arr: number[], total: number): boolean {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+      sum += arr[i];
+    }
+    return sum === total;
+  }
+
+  function findProductOfSummands(summandCount: number, total: number): number {
+    const factors = recurse(summandCount, total, arr => validateArrayElementSum(arr, total));
+    let product = 1;
+    for (let i = 0; i < factors.length; i++) {
+      product *= factors[i];
+    }
+    return product;
+  }
+
+  return [`${findProductOfSummands(2, 2020)}`, `${findProductOfSummands(3, 2020)}`];
 }

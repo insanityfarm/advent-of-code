@@ -58,12 +58,15 @@ const main = async () => {
   console.log(`Running solution for Advent of Code ${year}, day ${day}...\n`);
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const { run }: { run: (input: string) => void } = require(path.join(challengesDir, year, day));
-  const input = readFileSync(path.join(inputsDir, year, day, 'input'), 'utf8');
+  const { run }: { run: (input: string) => string[] } = require(path.join(challengesDir, year, day));
+  const input = readFileSync(path.join(inputsDir, year, day, 'input'), 'utf8').trim();
 
-  run(input);
+  const result = run(input);
+  for (let i = 0; i < result.length; i++) {
+    console.log(`PART ${i + 1}:\n${result[i]}\n`);
+  }
 
-  console.log(`\nFinished in ${Date.now() - startTime}ms.`);
+  console.log(`Finished in ${Date.now() - startTime}ms.`);
 };
 
 void main();
