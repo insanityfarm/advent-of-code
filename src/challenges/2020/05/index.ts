@@ -47,12 +47,14 @@ function getSeatIdData(boardingPasses): [number, number[]] {
 
 function findMissingSeatId(boardingPasses): number {
   const seatIdData = getSeatIdData(boardingPasses);
+  let result = 0;
   for (let [minId, ids] = seatIdData, i = minId; i < ids.length + minId; i++) {
     if (!ids.includes(i)) {
-      return i;
+      result = i;
+      break;
     }
   }
-  return 0;
+  return result;
 }
 
 export function run(input: string): string[] {
